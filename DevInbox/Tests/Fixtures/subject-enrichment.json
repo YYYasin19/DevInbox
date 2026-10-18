@@ -1,0 +1,98 @@
+{
+  "data": {
+    "s0": {
+      "issueOrPullRequest": {
+        "__typename": "PullRequest",
+        "prState": "MERGED",
+        "isDraft": false,
+        "comments": { "totalCount": 5 },
+        "prTimeline": {
+          "nodes": [
+            {
+              "__typename": "PullRequestCommit",
+              "commit": {
+                "committedDate": "2026-10-09T22:59:52Z",
+                "authors": { "nodes": [ { "user": { "login": "alice", "avatarUrl": "https://avatars.githubusercontent.com/u/1?v=4" } } ] }
+              }
+            },
+            {
+              "__typename": "HeadRefForcePushedEvent",
+              "actor": { "login": "alice", "avatarUrl": "https://avatars.githubusercontent.com/u/1?v=4" },
+              "createdAt": "2026-10-09T23:09:52Z"
+            },
+            {
+              "__typename": "MergedEvent",
+              "actor": { "login": "bob", "avatarUrl": "https://avatars.githubusercontent.com/u/2?v=4" },
+              "createdAt": "2026-10-09T23:25:14Z"
+            },
+            {
+              "__typename": "ClosedEvent",
+              "actor": { "login": "bob", "avatarUrl": "https://avatars.githubusercontent.com/u/2?v=4" },
+              "createdAt": "2026-10-09T23:25:15Z"
+            }
+          ]
+        }
+      }
+    },
+    "s1": {
+      "issueOrPullRequest": {
+        "__typename": "PullRequest",
+        "prState": "OPEN",
+        "isDraft": false,
+        "comments": { "totalCount": 2 },
+        "prTimeline": {
+          "nodes": [
+            {
+              "__typename": "PullRequestReview",
+              "author": { "login": "carol", "avatarUrl": null },
+              "state": "CHANGES_REQUESTED",
+              "createdAt": "2026-10-08T10:00:00Z",
+              "submittedAt": "2026-10-08T10:05:00Z",
+              "url": "https://github.com/acme/api/pull/12#pullrequestreview-99"
+            },
+            {
+              "__typename": "IssueComment",
+              "author": { "login": "me", "avatarUrl": null },
+              "createdAt": "2026-10-08T11:00:00Z",
+              "url": "https://github.com/acme/api/pull/12#issuecomment-1"
+            },
+            {
+              "__typename": "PullRequestReview",
+              "author": { "login": "me", "avatarUrl": null },
+              "state": "PENDING",
+              "createdAt": "2026-10-08T12:00:00Z",
+              "submittedAt": null,
+              "url": "https://github.com/acme/api/pull/12#pullrequestreview-100"
+            }
+          ]
+        }
+      }
+    },
+    "s2": {
+      "issueOrPullRequest": {
+        "__typename": "Issue",
+        "issueState": "CLOSED",
+        "stateReason": "NOT_PLANNED",
+        "comments": { "totalCount": 0 },
+        "issueTimeline": {
+          "nodes": [
+            {
+              "__typename": "AssignedEvent",
+              "actor": { "login": "dave", "avatarUrl": null },
+              "createdAt": "2026-10-01T09:00:00Z",
+              "assignee": { "__typename": "User", "login": "me" }
+            },
+            null
+          ]
+        }
+      }
+    },
+    "s3": null
+  },
+  "errors": [
+    {
+      "type": "FORBIDDEN",
+      "message": "Although you appear to have the correct authorization credentials, the `secret-org` organization has enabled OAuth App access restrictions, meaning that data access to third-parties is limited."
+    }
+  ]
+}

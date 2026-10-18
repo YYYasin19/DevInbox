@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - DevInbox/**
+      - Project.swift
+      - Tuist.swift
+      - mise.toml
+      - scripts/**
+      - .github/workflows/release.yml
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-26
+    steps:
+      # The full history gives the build number and the previous release tag.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: jdx/mise-action@v5
+
+      - name: Test
+        run: |
+          mise exec -- tuist generate --no-open
+          xcodebuild -workspace DevInbox.xcworkspace -scheme DevInbox -derivedDataPath .build/DerivedData-test \
+            -destination 'platform=macOS' -quiet test
+
+      - name: Build and package
+        id: package
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: scripts/release.sh
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.package.outputs.version }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null; then
+            echo "::notice::v$VERSION already exists, nothing to release"
+            exit 0
+          fi
+          # --target pins the tag to the commit that was built, not to whatever main is by now.
+          gh release create "v$VERSION" .build/release/DevInbox.dmg .build/release/appcast.xml \
+            --target "$GITHUB_SHA" --title "DevInbox $VERSION" --notes-file .build/release/notes.md --latest
